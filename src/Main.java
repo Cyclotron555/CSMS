@@ -1,51 +1,68 @@
+//Claude Butnaru
+
 import javax.swing.*;
 import java.awt.*;  
 import java.awt.event.*; 
+import java.awt.FlowLayout;
 
-public class Main
+class Main
 {
-    //Class globals
+    //Class level VARS BEGIN
     JFrame window = new JFrame("CSMS - Convenience Store Management System by Claude Butnaru");
-    JPanel panel = new JPanel();
+    public JPanel mainPanel = new JPanel();
     JMenuBar menuBar = new JMenuBar();
-    Color panelColor = new Color(25, 25, 25);
+    Color panelColor = new Color(33, 33, 33);
     Color menuTextColor = new Color(200, 200, 200);
     JSeparator separator1 = new JSeparator();    
     JSeparator separator2 = new JSeparator();
-    Database database = new Database();
+    //Class level VARS END
     
     double X, Y;
+    //Main method is here <<--------------------------------------------------------
     public static void main(String[] args)
     {
-        setNimbusDarkTheme();
+        setLookAndFeelTheme();
         Main main = new Main(); 
         main.setRules();
         main.addComponnents();
         main.menu();
-        main.database.connect();
+        LoginWindow loginWindow = new LoginWindow();
+        loginWindow.login();
+        Database.connect();
     }
 
 private void setRules()
 {
 //Frame rules + frame icon
 window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-window.setSize(740, 460);
+window.setMinimumSize(new Dimension(1280, 720));
+window.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 window.setResizable(true);
 window.setLayout(null);
-window.setUndecorated(false);
-Image icon = Toolkit.getDefaultToolkit().getImage("pixelpro.png"); 
+window.setUndecorated(true);
+Image icon = Toolkit.getDefaultToolkit().getImage("./img/mainIcon.png"); 
 window.setIconImage(icon);
-//Panel rules
-panel.setBounds(0, 0, 740, 460);    
-panel.setOpaque(true);
-panel.setBackground(panelColor);
-panel.setLayout(null);
+//Panel rules  
+mainPanel.setOpaque(true);
+mainPanel.setBackground(panelColor);
+mainPanel.setLayout(new FlowLayout());
+//Resize panel on window resize ev. handler | Sets the main panel size same as the window
+window.addComponentListener(new ComponentAdapter() {
+  @Override
+  public void componentResized(ComponentEvent e) {
+    X = e.getComponent().getSize().getWidth();
+    Y = e.getComponent().getSize().getHeight();
+    mainPanel.setBounds(0, 0, (int)X, (int)Y);
+    refresh();
+  }
+});
+
 //MenuBar rules
-//menuBar.setBackground(panelColor);
-//menuBar.border(Color.BLACK);
+menuBar.setBackground(panelColor);
+//menuBar.borderColor(Color.BLACK);
 }
 
-//Top menu
+//Top menu bar (File, Edit etc)
 private void menu()
     {
       int w = 50;
@@ -85,7 +102,7 @@ private void menu()
         //File menu
         w = 240;
         h = 30;
-        JMenuItem newItem = new JMenuItem("New Item");
+        JMenuItem newItem = new JMenuItem("New Product");
         newItem.setPreferredSize(new Dimension(w, h));
         newItem.setForeground(menuTextColor);
         newItem.setBackground(panelColor);
@@ -95,7 +112,7 @@ private void menu()
         openItem.setForeground(menuTextColor);
         openItem.setBackground(panelColor);
 
-        JMenuItem openRecentItem = new JMenuItem("Open Item");
+        JMenuItem openRecentItem = new JMenuItem("Open Product");
         openRecentItem.setPreferredSize(new Dimension(w, h));
         openRecentItem.setForeground(menuTextColor);
         openRecentItem.setBackground(panelColor);
@@ -105,12 +122,12 @@ private void menu()
         saveItem.setForeground(menuTextColor);
         saveItem.setBackground(panelColor);
 
-        JMenuItem saveAsItem = new JMenuItem("Save As");
+        JMenuItem saveAsItem = new JMenuItem("Delete Product");
         saveAsItem.setPreferredSize(new Dimension(w, h));
         saveAsItem.setForeground(menuTextColor);
         saveAsItem.setBackground(panelColor);
 
-        JMenuItem importItem = new JMenuItem("Import");
+        JMenuItem importItem = new JMenuItem("Delete Employee");
         importItem.setPreferredSize(new Dimension(w, h));
         importItem.setForeground(menuTextColor);
         importItem.setBackground(panelColor);
@@ -163,84 +180,46 @@ private void menu()
         fileMenu.add(closeItem);
         fileMenu.add(closeAllItem);
         fileMenu.add(exitItem);
-       
-
-        //Resize panel on window resize ev. handler
-        window.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-              X = e.getComponent().getSize().getWidth();
-              Y = e.getComponent().getSize().getHeight();
-              panel.setBounds(0, 0, (int)X, (int)Y);
-            }
-          });
     }
 
 private void addComponnents()
 {
-    window.add(panel);
+    
+    window.add(mainPanel);
     window.setVisible(true);
     window.setJMenuBar(menuBar);
-    window.invalidate();
-    window.validate();
-    window.repaint();
-    window.setVisible(true);
+    refresh();
+}
+
+private void refresh()
+{
+  window.invalidate();
+  window.validate();
+  window.repaint();
+  window.setVisible(true);
 }
 
 //Set Nimbus Dark Theme
-private static void setNimbusDarkTheme()
+private static void setLookAndFeelTheme()
 {
-  UIManager.put("activeCaption", new javax.swing.plaf.ColorUIResource(Color.YELLOW));
-  UIManager.put( "control", new Color( 50, 50, 50) );
-  UIManager.put( "info", new Color(50, 50, 50) );
-  UIManager.put( "nimbusBase", new Color( 0, 0, 0) );
-  UIManager.put( "nimbusBlueGrey", new Color(0, 0, 0) );
-  UIManager.put( "nimbusAlertYellow", new Color( 248, 187, 100) );
-  UIManager.put( "nimbusDisabledText", new Color( 128, 128, 128) );
-  UIManager.put( "nimbusFocus", new Color(10,10,10) );
-  UIManager.put( "nimbusGreen", new Color(176,179,50) );
-  UIManager.put( "nimbusInfoBlue", new Color( 66, 139, 221) );
-  UIManager.put( "nimbusLightBackground", new Color( 10, 10, 10) );
-  UIManager.put( "nimbusOrange", new Color(191,98,4) );
-  UIManager.put( "nimbusRed", new Color(169,46,34) );
-  UIManager.put( "nimbusSelectedText", new Color( 10, 10, 10) );
-  UIManager.put( "nimbusSelectionBackground", new Color( 10, 10, 10) );
-  UIManager.put( "text", new Color( 200, 200, 200) );
-  //change titlebar color
-  Main main = new Main();  
-  main.window.getRootPane().putClientProperty("JRootPane.titleBarBackground", new Color(23,180,252));
-  main.window.getRootPane().putClientProperty("JRootPane.titleBarForeground", Color.white);
-    try 
-    {
-      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) 
-      {
-        if ("Nimbus".equals(info.getName())) 
-        {
-            javax.swing.UIManager.setLookAndFeel(info.getClassName());
-            break;
-        }
-      }
-    } 
-    catch (ClassNotFoundException e) 
-    {
-      e.printStackTrace();
-    } 
-    catch (InstantiationException e) 
-    {
-      e.printStackTrace();
-    } 
-    catch (IllegalAccessException e) 
-    {
-      e.printStackTrace();
-    } 
-    catch (javax.swing.UnsupportedLookAndFeelException e) 
-    {
-      e.printStackTrace();
-    } 
-    catch (Exception e) 
-    {
-      e.printStackTrace();
-    }
-    
+  try 
+  {
+    UIManager.setLookAndFeel(
+    UIManager.getCrossPlatformLookAndFeelClassName());
+    //Changes the drop-down menu border
+    UIManager.put("PopupMenu.border", BorderFactory.createLineBorder(new Color(7, 7, 7), 1));
+    UIManager.put("MenuBar.border", BorderFactory.createLineBorder(new Color(7, 7, 7), 1));
+    UIManager.put("Menu.border", BorderFactory.createLineBorder(new Color(7, 7, 7), 0));
+    UIManager.put("MenuItem.border", BorderFactory.createLineBorder(new Color(7, 7, 7), 0));
+    UIManager.put("MenuBar.foreground", new Color(7, 7, 7));
+    UIManager.put("MenuBar.background", new Color(30, 30, 30));
+    UIManager.put("Separator.background", new Color(15, 15, 15));
+    UIManager.put("Separator.foreground", new Color(25, 25, 25));
+
+ }
+  catch (Exception e) 
+  { 
+  }
+ JFrame.setDefaultLookAndFeelDecorated(true); 
 }
 }
