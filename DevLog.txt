@@ -1,0 +1,51 @@
+Create Login as Manager or Employee buttons with flow layout center buttons
+
+
+
+Connection connection = null;
+        try
+        {
+          // create a database connection
+          connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
+          Statement statement = connection.createStatement();
+          // set timeout to 30 sec.
+          statement.setQueryTimeout(30);  
+
+          //Remove this statement if you want the database to hold on closing
+          statement.executeUpdate("drop table if exists person");
+
+          //Statements execute updates on items or employees
+          statement.executeUpdate("create table person (id integer primary key autoincrement, name string)");
+          statement.executeUpdate("insert into person values(null, 'Claude Butnaru')");
+          statement.executeUpdate("insert into person values(null, 'Bill Ruben')");
+          statement.executeUpdate("insert into person values(null, 'Elvis Presley')");
+          statement.executeUpdate("insert into person values(null, 'Michael Jackson')");
+
+          //Query select to display from database
+          ResultSet rs = statement.executeQuery("select * from person");
+          while(rs.next())
+            {
+            // read the result set
+            System.out.println("name = " + rs.getString("name"));
+            System.out.println("id = " + rs.getInt("id"));
+            }
+        }
+        catch(SQLException e)
+        {
+          // if the error message is "out of memory", 
+          // it probably means no database file is found
+          System.err.println(e.getMessage());
+            }
+          finally
+            {
+          try
+            {
+            if(connection != null)
+              connection.close();
+            }
+          catch(SQLException e)
+            {
+            // Connection close on failure
+            System.err.println(e);
+            }
+        }
