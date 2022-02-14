@@ -1,13 +1,9 @@
 //Database class
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 //Claude Butnaru
 
-public class Database 
+public class DB 
 {
       public static void connect() 
       {
