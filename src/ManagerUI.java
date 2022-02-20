@@ -5,7 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ManagerUI {
-    private static JTabbedPane tab = new JTabbedPane();
+    public static JTabbedPane tab = new JTabbedPane();
 
     public static void managerData() {
 
@@ -34,7 +34,6 @@ public class ManagerUI {
         splitPane1.setDividerLocation(400);
         // set the orientation of the separator and location
         splitPane1.setOrientation(SwingConstants.VERTICAL);
-        Main.mainPanel.add(tab);
         tab.add("  Employees  ", splitPane1);
     }
 
@@ -58,7 +57,7 @@ public class ManagerUI {
         splitPane2.setDividerLocation(400);
         // set the orientation of the separator and location
         splitPane2.setOrientation(SwingConstants.VERTICAL);
-        Main.mainPanel.add(tab);
+        //Main.mainPanel.add(tab);
         tab.add("  Products  ", splitPane2);
     }
 }
