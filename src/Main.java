@@ -10,59 +10,68 @@ class Main {
   // Class level VARS BEGIN
   JFrame window = new JFrame("CSMS - Convenience Store Management System by Claude Butnaru");
   public static JPanel mainPanel = new JPanel();
-  public static JPanel buttonPanel = new JPanel();
+  public static JToolBar buttonToolBar = new JToolBar();
   JMenuBar menuBar = new JMenuBar();
   Color panelColor = new Color(33, 33, 33);
   JSeparator separator1 = new JSeparator();
   JSeparator separator2 = new JSeparator();
-  int displayNumber;
+  //int displayNumber;
+  public static GridBagConstraints mainGrid = new GridBagConstraints();
   // Class level VARS END
 
   public static int X, Y;
 
   // Main method is here
   // <<--------------------------------------------------------
-  public static void main(String[] args)
-  {
+  public static void main(String[] args) {
+    DB.connect();
     setLookAndFeelTheme();
     Main main = new Main();
     main.setPanelsRules();
+    main.setButtonToolBarRules();
     main.setWindowRules();
     main.addComponnents();
     main.menu();
-    DB.connect();
     main.refresh();
   }
 
   // Panel rules
-  private void setPanelsRules()
-  {
+  private void setPanelsRules() {
     mainPanel.setOpaque(true);
-    buttonPanel.setOpaque(true);
     mainPanel.setBackground(panelColor);
-    buttonPanel.setBackground(new Color(28, 28, 28));
-    buttonPanel.setBorder(BorderFactory.createLineBorder(new Color(10, 10, 10)));
+    mainPanel.setBorder(BorderFactory.createEmptyBorder());
     mainPanel.setLayout(new GridBagLayout());
+    mainGrid.fill = GridBagConstraints.BOTH;
+    mainGrid.weightx = 0;
+    mainGrid.weighty = 0;
+    mainGrid.insets = new Insets(0, 0, 250, 0);
+
     // Resize panel on window resize ev. handler | Sets the main panel size same as
     // the window
-    window.addComponentListener(new ComponentAdapter()
-    {
+    window.addComponentListener(new ComponentAdapter() {
       @Override
-      public void componentResized(ComponentEvent e)
-      {
-        X = (int)(e.getComponent().getSize().getWidth());
-        Y = (int)(e.getComponent().getSize().getHeight());
-        mainPanel.setBounds(0, 30, X, Y);
-        buttonPanel.setBounds(0, 0, X, 30);
+      public void componentResized(ComponentEvent e) {
+        X = (int) (e.getComponent().getSize().getWidth());
+        Y = (int) (e.getComponent().getSize().getHeight());
+        mainPanel.setBounds(0, 0, X, Y);
         refresh();
         window.setLocationRelativeTo(null);
       }
     });
   }
 
+  private void setButtonToolBarRules() {
+    buttonToolBar.setBackground(new Color(24, 24, 24));
+    buttonToolBar.setPreferredSize(new Dimension(X, 64));
+    buttonToolBar.setBorder(BorderFactory.createEmptyBorder());
+    ToolBarButton firstButton = new ToolBarButton(new ImageIcon("./img/insertPeople.png"), "Insert Employee");
+    buttonToolBar.add(firstButton);
+    ToolBarButton secondButton = new ToolBarButton(new ImageIcon("./img/insertProduct.png"), "Insert Product");
+    buttonToolBar.add(secondButton);
+  }
+
   // Frame/window rules + frame icon
-  private void setWindowRules()
-  {
+  private void setWindowRules() {
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setExtendedState(JFrame.MAXIMIZED_BOTH);
     window.setMinimumSize(new Dimension(980, 551));
@@ -72,8 +81,7 @@ class Main {
   }
 
   // Top menu bar (File, Edit etc)
-  private void menu()
-  {
+  private void menu() {
     int w = 50;
     int h = 20;
     // Menu Titles
@@ -111,17 +119,25 @@ class Main {
     JMenuItem exit = new JMenuItem("Exit");
 
     /*
-     * newItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
-     * openItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
+     * newItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
+     * InputEvent.CTRL_DOWN_MASK));
+     * openItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
+     * InputEvent.CTRL_DOWN_MASK));
      * openRecentItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,
-     * InputEvent.CTRL_DOWN_MASK)); saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-     * InputEvent.CTRL_DOWN_MASK)); saveAsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-     * InputEvent.CTRL_DOWN_MASK)); importItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,
-     * InputEvent.CTRL_DOWN_MASK)); exportItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
-     * InputEvent.CTRL_DOWN_MASK)); closeItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
+     * InputEvent.CTRL_DOWN_MASK));
+     * saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+     * InputEvent.CTRL_DOWN_MASK));
+     * saveAsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+     * InputEvent.CTRL_DOWN_MASK));
+     * importItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,
+     * InputEvent.CTRL_DOWN_MASK));
+     * exportItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
+     * InputEvent.CTRL_DOWN_MASK));
+     * closeItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
      * InputEvent.CTRL_DOWN_MASK));
      * closeAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
-     * InputEvent.CTRL_DOWN_MASK)); exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
+     * InputEvent.CTRL_DOWN_MASK));
+     * exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
      * InputEvent.CTRL_DOWN_MASK));
      */
 
@@ -139,64 +155,58 @@ class Main {
     fileMenu.add(exit);
 
     // Set size and space of menu items
-    for (int i = 0; i < fileMenu.getMenuComponentCount(); i++)
-    {
+    for (int i = 0; i < fileMenu.getMenuComponentCount(); i++) {
       if (!fileMenu.getMenuComponent(i).equals(separator1)
-          && !fileMenu.getMenuComponent(i).equals(separator2))
-      {
+          && !fileMenu.getMenuComponent(i).equals(separator2)) {
         fileMenu.getMenuComponent(i).setPreferredSize(new Dimension(270, 30));
         System.out.println(fileMenu.getMenuComponent(i));
       }
     }
   }
 
-  private void addComponnents()
-  {
-    window.add(buttonPanel);
+  private void addComponnents() {
     window.add(mainPanel);
+    window.add(buttonToolBar, BorderLayout.NORTH);
     window.setVisible(true);
     window.setJMenuBar(menuBar);
     refresh();
-    displayNumber = 0;
+    LoginUI.setDisplayNumber(0);
     switchUI();
   }
 
-  private void refresh()
-  {
+  private void refresh() {
     window.revalidate();
     window.repaint();
     window.setVisible(true);
   }
-//Switching the UI happens here
-  public void switchUI()
-  {
-    if (displayNumber == 0)
-    {
+
+  // Switching the UI happens here
+  public void switchUI() {
+    if (LoginUI.getDisplayNumber() == 0) {
       LoginUI.login();
       refresh();
+      return;
     }
-    if (displayNumber == 1)
-    {
+    if (LoginUI.getDisplayNumber() == 1) {
       mainPanel.remove(LoginUI.mainImageLabel);
       ManagerUI.managerData();
+      mainPanel.add(ManagerUI.tab);
       mainPanel.revalidate();
       mainPanel.repaint();
+      return;
+    }
+    if (LoginUI.getDisplayNumber() == 2) {
+      mainPanel.remove(LoginUI.mainImageLabel);
+      EmployeeUI.employeeData();
+      mainPanel.add(EmployeeUI.tab1);
+      mainPanel.revalidate();
+      mainPanel.repaint();
+      return;
     }
   }
-  public void setDisplayNumber(int _displayNumber)
-  {
-    this.displayNumber = _displayNumber;
-  }
-  public int getDisplayNumber()
-  {
-    return this.displayNumber;
-  }
-
   // Set Theme
-  private static void setLookAndFeelTheme()
-  {
-    try
-    {
+  private static void setLookAndFeelTheme() {
+    try {
       UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
       // Changes the drop-down menu border
       UIManager.put("PopupMenu.border", BorderFactory.createLineBorder(new Color(7, 7, 7), 1));
@@ -213,8 +223,8 @@ class Main {
       UIManager.put("MenuItem.foreground", new Color(200, 200, 200));
       UIManager.put("MenuItem.border", BorderFactory.createLineBorder(new Color(7, 7, 7), 0));
 
-    } catch (Exception e)
-    {
+    } catch (Exception e) {
+      JOptionPane.showMessageDialog(mainPanel, e.toString(), "CSMS - Display Error", JOptionPane.ERROR_MESSAGE);
     }
     JFrame.setDefaultLookAndFeelDecorated(true);
   }
