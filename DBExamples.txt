@@ -49,3 +49,18 @@ Connection connection = null;
             System.err.println(e);
             }
         }
+         String sql = "CREATE TABLE IF NOT EXISTS employees (\n"
+                + "	id integer PRIMARY KEY autoincrement,\n"
+                + "	firstName text NOT NULL,\n"
+                + "	lastName text NOT NULL,\n"
+                + "	dob text NOT NULL,\n"
+                + "	sex character(20) NOT NULL,\n"
+                + "	socialSecurity text NOT NULL,\n"
+                + ");";
+
+
+                     " firstName text NOT NULL, " +
+                    " lastName text NOT NULL, " +
+                    " dob text NOT NULL, " +
+                    " sex character(20) NOT NULL, " +
+                    " socialSecurity text NOT NULL )) ";

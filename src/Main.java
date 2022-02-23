@@ -24,7 +24,13 @@ class Main {
   // Main method is here
   // <<--------------------------------------------------------
   public static void main(String[] args) {
-    DB.connect();
+    //DB.connect();
+    DB.createTableEmployee();
+    DB.insertEmployee("Singer", "Michael", "Jackson","123 Main St", "Gary", "IN", "46637", "5/9/1975", "M", "312-15-9748");
+    DB.insertEmployee("Singer", "Elvis", "Presley","343 Eckland St", "San Francisco", "CA", "90021", "1/4/1935", "M", "533-75-3225");
+    DB.insertEmployee("Worker", "John", "Dunn","43234 Kole Ave", "Memphis", "TN", "25633", "1/3/1966", "M", "835-64-6777");
+    DB.insertEmployee("Fighter", "Derek", "Wilkinson","654 Burlan Ct", "Orlando", "FL", "56643", "12/2/1989", "M", "753-34-8237");
+    DB.displayEmployee();
     setLookAndFeelTheme();
     Main main = new Main();
     main.setPanelsRules();
