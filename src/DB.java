@@ -4,6 +4,7 @@
 import javax.swing.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 //Claude Butnaru
 
@@ -84,8 +85,10 @@ public class DB {
         }
     }
 
-    // Display employee from table employee
-    public static void displayEmployee() {
+    // Display employee from table employee | this is an array list it displays the
+    // employee info into an arrayList as strings
+    public static ArrayList<String> displayEmployee() {
+        ArrayList<String> employeeList = new ArrayList<String>();
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url);
@@ -95,19 +98,19 @@ public class DB {
             // Query select to display from DB
             ResultSet rs = statement.executeQuery("SELECT * FROM employee");
             while (rs.next()) {
-                // read the result set
-                System.out.println("ID = " + rs.getInt("id"));
-                System.out.println("Position = " + rs.getString("position"));
-                System.out.println("First Name = " + rs.getString("firstName"));
-                System.out.println("Last Name = " + rs.getString("lastName"));
-                System.out.println("Address = " + rs.getString("address"));
-                System.out.println("City = " + rs.getString("city"));
-                System.out.println("State = " + rs.getString("state"));
-                System.out.println("Zip = " + rs.getString("zip"));
-                System.out.println("DOB = " + rs.getString("dob"));
-                System.out.println("Sex = " + rs.getString("sex"));
-                System.out.println("Social Security = " + rs.getString("socialSecurity"));
-                System.out.println("Employed since = " + rs.getString("doe"));
+                // read the result set from the employee table and insert into list
+                employeeList.add(String.valueOf(rs.getInt("id")));
+                employeeList.add(rs.getString("position"));
+                employeeList.add(rs.getString("firstName"));
+                employeeList.add(rs.getString("lastName"));
+                employeeList.add(rs.getString("address"));
+                employeeList.add(rs.getString("city"));
+                employeeList.add(rs.getString("state"));
+                employeeList.add(rs.getString("zip"));
+                employeeList.add(rs.getString("dob"));
+                employeeList.add(rs.getString("sex"));
+                employeeList.add(rs.getString("socialSecurity"));
+                employeeList.add(rs.getString("doe"));
             }
 
         } catch (SQLException e) {
@@ -115,5 +118,6 @@ public class DB {
                     JOptionPane.ERROR_MESSAGE);
             System.out.println(e);
         }
+        return employeeList;
     }
 }

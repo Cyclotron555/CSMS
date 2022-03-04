@@ -2,46 +2,81 @@
 //Claude Butnaru
 //This class creates labels for employees and employees info
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.*;
 
-public class EmployeeLabel extends JButton {
-    private static final Insets margins = new Insets(0, 0, 0, 0);
-    private Color pressedColor = new Color(90, 90, 90);
-    private Color rolloverColor = new Color(55, 55, 55);
-    private Color normalColor = new Color(40, 40, 40);
+public class EmployeeLabel extends JLabel implements MouseListener {
+    private Color rolloverColor1 = new Color(52, 73, 94);
+    private Color rolloverColor2 = new Color(231, 76, 60);
+    private Color normalColor1 = new Color(44, 62, 80);
+    private Color normalColor2 = new Color(192, 57, 43);
 
     // constructor
     public EmployeeLabel(String text) {
         super();
+        addMouseListener(this);
         setText(text);
-        setMargin(margins);
-        setCursor(new Cursor(Cursor.HAND_CURSOR));
+        ManagerUI.countLabels++;
         setVerticalTextPosition(CENTER);
         setHorizontalTextPosition(CENTER);
         setBorder(null);
-        setBorderPainted(false);
-        setContentAreaFilled(false);
-        setBackground(normalColor);
         setForeground(Color.WHITE);
         setOpaque(true);
         setForeground(new Color(200, 200, 200));
         setFont(new Font("Verdana", Font.PLAIN, 32));
-        setToolTipText(text);
+        setToolTipText(text.toUpperCase());
+        setLabelColors();
+    }
 
-        // onChange listener for button changing colors on mouse over, pressed
-        addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent evt) {
-                if (getModel().isPressed()) {
-                    setBackground(pressedColor);
-                } else if (getModel().isRollover()) {
-                    setBackground(rolloverColor);
-                } else {
-                    setBackground(normalColor);
-                }
-            }
-        });
+    // Mouse Clicked
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (getText().equals("  First Name")) {
+            JOptionPane.showMessageDialog(Main.mainPanel,
+                    "Hello.");
+        }
+
+    }
+
+    // Mouse Pressed
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    // Mouse Released
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    // Mouse Enter | Sets labels color on mouse enter(a lighter shade))
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        if (getBackground() == normalColor1) {
+            setBackground(rolloverColor1);
+        } else if (getBackground() == normalColor2) {
+            setBackground(rolloverColor2);
+        }
+    }
+
+    // Mouse Exit | Sets labels color on mouse exit back to normal
+    @Override
+    public void mouseExited(MouseEvent e) {
+        if (getBackground() == rolloverColor1) {
+            setBackground(normalColor1);
+        } else if (getBackground() == rolloverColor2) {
+            setBackground(normalColor2);
+        }
+    }
+
+    // Sets the labels base colors
+    private void setLabelColors() {
+        if (ManagerUI.countLabels % 2 == 0) {
+            setBackground(normalColor1);
+        } else {
+            setBackground(normalColor2);
+        }
     }
 }
