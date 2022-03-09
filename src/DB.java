@@ -28,11 +28,6 @@ public class DB {
             // set timeout to 30 sec.
             statement.setQueryTimeout(30);
 
-            ///////////////////// Delete////////////////////////////
-            String sql = "DROP TABLE employee";
-            statement.executeUpdate(sql);
-            ///////////////////// Delete////////////////////////////
-
             String createTable = "CREATE TABLE IF NOT EXISTS employee (" +
                     " id INTEGER PRIMARY KEY autoincrement, " +
                     " position VARCHAR(50) NOT NULL, " +
@@ -78,6 +73,22 @@ public class DB {
                             + "'" + _sex + "'" + ", "
                             + "'" + _socialSecurity + "'" + ", "
                             + "'" + getDateTime() + "'" + ")");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(Main.mainPanel, e.toString(), "CSMS - DatabaseError",
+                    JOptionPane.ERROR_MESSAGE);
+            System.out.println(e);
+        }
+    }
+
+    // Delete Employee by ID
+    public static void deleteEmployee(String _id) {
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            // set timeout to 30 sec.
+            statement.setQueryTimeout(30);
+            statement.executeUpdate("DELETE FROM employee " + "WHERE id = " + _id);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(Main.mainPanel, e.toString(), "CSMS - DatabaseError",
                     JOptionPane.ERROR_MESSAGE);

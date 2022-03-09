@@ -15,26 +15,26 @@ class Main {
   Color panelColor = new Color(33, 33, 33);
   JSeparator separator1 = new JSeparator();
   JSeparator separator2 = new JSeparator();
-  //int displayNumber;
-  public static GridBagConstraints mainGrid = new GridBagConstraints();
-  // Class level VARS END
-
   public static int X, Y;
+  public static GridBagConstraints mainGrid = new GridBagConstraints();
+  private static AButton displayEmployeesBtn;
+  private static AButton addEmployeeBtn;
+  private static AButton editEmployeeBtn;
+  private static AButton deleteEmployeeBtn;
+  private static AButton insertProductBtn;
+  private static AButton deleteProductBtn;
+  // Class level VARS END
 
   // Main method is here
   // <<--------------------------------------------------------
   public static void main(String[] args) {
-    //DB.connect();
+    // DB.connect();
     DB.createTableEmployee();
-    DB.insertEmployee("Singer", "Michael", "Jackson","123 Main St", "Gary", "IN", "46637", "5/9/1975", "M", "312-15-9748");
-    DB.insertEmployee("Singer", "Elvis", "Presley","343 Eckland St", "San Francisco", "CA", "90021", "1/4/1935", "M", "533-75-3225");
-    DB.insertEmployee("Worker", "John", "Dunn","43234 Kole Ave", "Memphis", "TN", "25633", "1/3/1966", "M", "835-64-6777");
-    DB.insertEmployee("Fighter", "Derek", "Wilkinson","654 Burlan Ct", "Orlando", "FL", "56643", "12/2/1989", "M", "753-34-8237");
     DB.displayEmployee();
     setLookAndFeelTheme();
     Main main = new Main();
     main.setPanelsRules();
-    main.setButtonToolBarRules();
+    setButtonToolBarRules();
     main.setWindowRules();
     main.addComponnents();
     main.menu();
@@ -66,14 +66,37 @@ class Main {
     });
   }
 
-  private void setButtonToolBarRules() {
+  private static void setButtonToolBarRules() {
     buttonToolBar.setBackground(new Color(24, 24, 24));
     buttonToolBar.setPreferredSize(new Dimension(X, 64));
     buttonToolBar.setBorder(BorderFactory.createEmptyBorder());
-    ToolBarButton firstButton = new ToolBarButton(new ImageIcon("./img/insertPeople.png"), "Insert Employee");
-    buttonToolBar.add(firstButton);
-    ToolBarButton secondButton = new ToolBarButton(new ImageIcon("./img/insertProduct.png"), "Insert Product");
-    buttonToolBar.add(secondButton);
+    displayEmployeesBtn = new AButton(new ImageIcon("./img/employees.png"), "All Employees");
+    buttonToolBar.add(displayEmployeesBtn);
+    addEmployeeBtn = new AButton(new ImageIcon("./img/insertPeople.png"), "Add New Employee");
+    buttonToolBar.add(addEmployeeBtn);
+    editEmployeeBtn = new AButton(new ImageIcon("./img/editPeople.png"), "Edit Employee");
+    buttonToolBar.add(editEmployeeBtn);
+    deleteEmployeeBtn = new AButton(new ImageIcon("./img/deletePeople.png"), "Remove Employee");
+    buttonToolBar.add(deleteEmployeeBtn);
+    insertProductBtn = new AButton(new ImageIcon("./img/insertProduct.png"), "Insert Product");
+    buttonToolBar.add(insertProductBtn);
+    deleteProductBtn = new AButton(new ImageIcon("./img/deleteProduct.png"), "Delete Product");
+    buttonToolBar.add(deleteProductBtn);
+    displayEmployeesBtn.setEnabled(false);
+    addEmployeeBtn.setEnabled(false);
+    editEmployeeBtn.setEnabled(false);
+    deleteEmployeeBtn.setEnabled(false);
+    insertProductBtn.setEnabled(false);
+    deleteProductBtn.setEnabled(false);
+  }
+
+  public static void enableAllButtons() {
+    displayEmployeesBtn.setEnabled(true);
+    addEmployeeBtn.setEnabled(true);
+    editEmployeeBtn.setEnabled(true);
+    deleteEmployeeBtn.setEnabled(true);
+    insertProductBtn.setEnabled(true);
+    deleteProductBtn.setEnabled(true);
   }
 
   // Frame/window rules + frame icon
@@ -195,6 +218,7 @@ class Main {
     }
     if (LoginUI.getDisplayNumber() == 1) {
       mainPanel.remove(LoginUI.mainImageLabel);
+      // ManagerUI class is called here
       ManagerUI.managerData();
       mainPanel.add(ManagerUI.tab);
       mainPanel.revalidate();
@@ -210,6 +234,7 @@ class Main {
       return;
     }
   }
+
   // Set Theme
   private static void setLookAndFeelTheme() {
     try {
