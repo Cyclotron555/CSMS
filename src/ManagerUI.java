@@ -1,3 +1,4 @@
+
 //Claude Butnaru
 //ManagerWindow class. After login this window is displayed to the manager
 import javax.swing.*;
@@ -13,6 +14,7 @@ public class ManagerUI {
     public static int countLabels = 0;
     public static JLabel previouslyPressedLabel;
     public static boolean isDataReady;
+    public static boolean isProductReady;
     public static ALabel autoEmployee;
     public static int presentEmployeID;
     private static JPanel panelLeft = new JPanel((LayoutManager) new FlowLayout(FlowLayout.CENTER));
@@ -29,6 +31,12 @@ public class ManagerUI {
     public static ATextField dobTxt;
     public static ATextField sexTxt;
     public static ATextField ssnTxt;
+    public static ATextField txtCategory;
+    public static ATextField txtProdName;
+    public static ATextField txtProdBrand;
+    public static ATextField txtPriceBought;
+    public static ATextField txtPriceSold;
+    public static JTextArea txtDescription;
 
     public static void managerData() {
 
@@ -36,6 +44,7 @@ public class ManagerUI {
         employeeTab();
         insertNewEmployeeTab();
         productsTab();
+        insertNewProductTab();
         Main.enableAllButtons();
     }
 
@@ -147,17 +156,17 @@ public class ManagerUI {
 
     }
 
-    private static void productsTab() {
-        // create text boxes
-        JTextArea textLeft = new JTextArea(10, 16);
+    // Products Tab
+    private static void productsTab() {/*******************************************************
+                                        *HERE * HERE * HERE * HERE * HERE * HERE * HERE * HERE*
+                                        *******************************************************/
+        GridBagLayout gridRight = new GridBagLayout();
+        GridBagConstraints gbcRight = new GridBagConstraints();
         // left and right panels
         JPanel panelLeft = new JPanel((LayoutManager) new FlowLayout(FlowLayout.CENTER));
         JPanel panelRight = new JPanel((LayoutManager) new FlowLayout(FlowLayout.CENTER));
         panelLeft.setBackground(new Color(33, 33, 33));
         panelRight.setBackground(new Color(33, 33, 33));
-
-        // add text boxes to panel
-        panelLeft.add(textLeft);
 
         // divider - first split panel | split the panel vertically
         JSplitPane splitPane2 = new JSplitPane(SwingConstants.VERTICAL, panelLeft, panelRight);
@@ -167,6 +176,108 @@ public class ManagerUI {
         splitPane2.setOrientation(SwingConstants.VERTICAL);
         // Products tab
         tab.add("  Products | Categories  ", splitPane2);
+
+
+
+
+
+
+
+
+    }
+
+    private static void insertNewProductTab() {
+        GridBagLayout gridP = new GridBagLayout();
+        GridBagConstraints gbc = new GridBagConstraints();
+        JPanel insertProductPanel = new JPanel();
+
+        tab.add("  Insert New Product  ", insertProductPanel);
+        insertProductPanel.setLayout(gridP);
+        insertProductPanel.setBackground(new Color(33, 33, 33));
+
+        // Labels
+        ALabel lblCategory = new ALabel(" Category");
+        ALabel lblProdName = new ALabel(" Product Name");
+        ALabel lblProdBrand = new ALabel(" Brand");
+        ALabel lblPriceBought = new ALabel(" Price Bought");
+        ALabel lblPriceSold = new ALabel(" Price Sold");
+        ALabel lblDescription = new ALabel(" Decription");
+
+        // Textfields
+        txtCategory = new ATextField("Category");
+        txtProdName = new ATextField("Product Name");
+        txtProdBrand = new ATextField("Brand");
+        txtPriceBought = new ATextField("Price Bought");
+        txtPriceSold = new ATextField("Price Sold");
+        txtDescription = new JTextArea("Decription");
+        JScrollPane scrollTExtArea = new JScrollPane(txtDescription, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        // Buttons
+        AButton btnInsertProd = new AButton(new ImageIcon("./img/insertProduct.png"), "Insert New Product");
+        AButton btnClearFields = new AButton(new ImageIcon("./img/clearFields.png"), "Clear Product Fields");
+
+        // Insert Labels in grid
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.ipadx = 375;
+        gbc.ipady = 50;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        insertProductPanel.add(lblCategory, gbc);
+        gbc.ipadx = 375;
+        gbc.ipady = 50;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        insertProductPanel.add(lblProdName, gbc);
+        gbc.ipadx = 375;
+        gbc.ipady = 50;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        insertProductPanel.add(lblProdBrand, gbc);
+        gbc.ipadx = 375;
+        gbc.ipady = 50;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        insertProductPanel.add(lblPriceBought, gbc);
+        gbc.ipadx = 375;
+        gbc.ipady = 50;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        insertProductPanel.add(lblPriceSold, gbc);
+        gbc.ipadx = 375;
+        gbc.ipady = 50;
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        insertProductPanel.add(lblDescription, gbc);
+        gbc.ipadx = 375;
+        gbc.ipady = 50;
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        insertProductPanel.add(btnClearFields, gbc);
+
+        // Insert textfields in grid
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        insertProductPanel.add(txtCategory, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        insertProductPanel.add(txtProdName, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        insertProductPanel.add(txtProdBrand, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        insertProductPanel.add(txtPriceBought, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        insertProductPanel.add(txtPriceSold, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        insertProductPanel.add(scrollTExtArea, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        insertProductPanel.add(btnInsertProd, gbc);
+
     }
 
     // Displays all the employees on labels on the left side of the screen in
@@ -193,7 +304,6 @@ public class ManagerUI {
                                     + DB.displayEmployee().get(i + 2));
                     autoEmployee.setName(String.valueOf(i));
                     allEmployeesPanel.add(autoEmployee);
-                    //System.out.println(DB.displayEmployee().get(i));
                 }
             }
         }
@@ -204,6 +314,9 @@ public class ManagerUI {
             int _state, int _zip, int _dob, int _sex, int _ssn) {
         ALabel IDLbl = new ALabel("  Employee ID");
         ATextField IDTxt = new ATextField(DB.displayEmployee().get(_id));
+        IDTxt.setEditable(false);
+        IDTxt.setBackground(new Color(44, 62, 80));
+        IDTxt.setForeground(new Color(192, 57, 43));
         ALabel positionLbl = new ALabel("  Position");
         ATextField positionTxt = new ATextField(DB.displayEmployee().get(_position));
         ALabel fNameLbl = new ALabel("  First Name");
@@ -272,10 +385,24 @@ public class ManagerUI {
             returnEData.add(dobTxt.getText());
             returnEData.add(sexTxt.getText());
             returnEData.add(ssnTxt.getText());
-            returnEData.add("Data Iserted");
+            returnEData.add("Data Inserted");
             returnEData.add("Data Deleted");
         }
         return returnEData;
     }
-    
+
+    public static ArrayList<String> productData() {
+        ArrayList<String> returnPData = new ArrayList<String>();
+        if (isProductReady) {
+            returnPData.add(txtCategory.getText());
+            returnPData.add(txtProdName.getText());
+            returnPData.add(txtProdBrand.getText());
+            returnPData.add(txtPriceBought.getText());
+            returnPData.add(txtPriceSold.getText());
+            returnPData.add(txtDescription.getText());
+            returnPData.add("Data Iserted");
+            returnPData.add("Data Deleted");
+        }
+        return returnPData;
+    }
 }
