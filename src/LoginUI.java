@@ -100,7 +100,6 @@ public class LoginUI implements ActionListener {
                 displayNumber = 1;
                 visibleLogin = true;
                 setLoginButtonsVisible();
-                System.out.println(displayNumber);
                 break;
 
             case ("Employee Login"):
@@ -116,7 +115,6 @@ public class LoginUI implements ActionListener {
                 break;
 
             case ("Login"):
-                System.out.println(displayNumber);
                 main.switchUI();
                 break;
         }

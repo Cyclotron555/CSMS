@@ -21,15 +21,19 @@ class Main {
   private static AButton addEmployeeBtn;
   private static AButton editEmployeeBtn;
   private static AButton deleteEmployeeBtn;
+  private static AButton allProductsBtn;
   private static AButton insertProductBtn;
+  private static AButton editProductBtn;
   private static AButton deleteProductBtn;
+
   // Class level VARS END
 
   // Main method is here
   // <<--------------------------------------------------------
   public static void main(String[] args) {
-    // DB.connect();
+
     DB.createTableEmployee();
+    DBP.createTableProduct();
     DB.displayEmployee();
     setLookAndFeelTheme();
     Main main = new Main();
@@ -78,15 +82,21 @@ class Main {
     buttonToolBar.add(editEmployeeBtn);
     deleteEmployeeBtn = new AButton(new ImageIcon("./img/deletePeople.png"), "Remove Employee");
     buttonToolBar.add(deleteEmployeeBtn);
+    allProductsBtn = new AButton(new ImageIcon("./img/allProducts.png"), "All Products");
+    buttonToolBar.add(allProductsBtn);
     insertProductBtn = new AButton(new ImageIcon("./img/insertProduct.png"), "Insert Product");
     buttonToolBar.add(insertProductBtn);
+    editProductBtn = new AButton(new ImageIcon("./img/editProduct.png"), "Edit Product");
+    buttonToolBar.add(editProductBtn);
     deleteProductBtn = new AButton(new ImageIcon("./img/deleteProduct.png"), "Delete Product");
     buttonToolBar.add(deleteProductBtn);
     displayEmployeesBtn.setEnabled(false);
     addEmployeeBtn.setEnabled(false);
     editEmployeeBtn.setEnabled(false);
     deleteEmployeeBtn.setEnabled(false);
+    allProductsBtn.setEnabled(false);
     insertProductBtn.setEnabled(false);
+    editProductBtn.setEnabled(false);
     deleteProductBtn.setEnabled(false);
   }
 
@@ -95,7 +105,9 @@ class Main {
     addEmployeeBtn.setEnabled(true);
     editEmployeeBtn.setEnabled(true);
     deleteEmployeeBtn.setEnabled(true);
+    allProductsBtn.setEnabled(true);
     insertProductBtn.setEnabled(true);
+    editProductBtn.setEnabled(true);
     deleteProductBtn.setEnabled(true);
   }
 
@@ -188,7 +200,6 @@ class Main {
       if (!fileMenu.getMenuComponent(i).equals(separator1)
           && !fileMenu.getMenuComponent(i).equals(separator2)) {
         fileMenu.getMenuComponent(i).setPreferredSize(new Dimension(270, 30));
-        System.out.println(fileMenu.getMenuComponent(i));
       }
     }
   }
@@ -234,6 +245,7 @@ class Main {
       return;
     }
   }
+
 
   // Set Theme
   private static void setLookAndFeelTheme() {

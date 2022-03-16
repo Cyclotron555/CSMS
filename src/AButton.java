@@ -2,20 +2,21 @@
 //Claude Butnaru
 //This class creates buttons inherits from JButton
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Collections;
 
-public class AButton extends JButton {
+public class AButton extends JButton implements MouseListener {
     private static final Insets margins = new Insets(0, 0, 0, 0);
     private Color pressedColor = new Color(90, 90, 90);
     private Color rolloverColor = new Color(55, 55, 55);
     private Color normalColor = new Color(40, 40, 40);
-    
 
     // constructor
     public AButton(Icon icon, String text) {
         super(icon);
+        addMouseListener(this);
         Main.buttonToolBar.add(Box.createHorizontalStrut(10));
         setText(text);
         setMargin(margins);
@@ -31,24 +32,6 @@ public class AButton extends JButton {
         setForeground(new Color(200, 200, 200));
         setFont(new Font("Arial", Font.PLAIN, 10));
         setToolTipText(text);
-
-        // onChange listener for button changing colors on mouse over, pressed
-        addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                if (getModel().isPressed()) {
-                    setBackground(pressedColor);
-                    addsNewEmployee();
-                    clearsFields();
-                    deletesEmployee();
-                    selectedTab();
-                } else if (getModel().isRollover()) {
-                    setBackground(rolloverColor);
-                } else {
-                    setBackground(normalColor);
-                }
-            }
-        });
     }
 
     // Adds employee data into DB
@@ -74,23 +57,54 @@ public class AButton extends JButton {
         }
     }
 
+    // Adds a new product
+    private void addsNewProduct() {
+        if (getText().equals("Insert New Product")) {
+            ManagerUI.isProductReady = true;
+            DBP.insertProduct(ManagerUI.productData().get(0), ManagerUI.productData().get(1),
+                    ManagerUI.productData().get(2), Double.parseDouble(ManagerUI.productData().get(3)),
+                    Double.parseDouble(ManagerUI.productData().get(4)),
+                    ManagerUI.productData().get(5));
+            ManagerUI.txtCategory.setText("Data Inserted");
+            ManagerUI.txtProdName.setText("Data Inserted");
+            ManagerUI.txtProdBrand.setText("Data Inserted");
+            ManagerUI.txtPriceBought.setText("Data Inserted");
+            ManagerUI.txtPriceSold.setText("Data Inserted");
+            ManagerUI.txtDescription.setText("Data Inserted");
+            for (int i = 0; i < DBP.getProductCategories().size(); i++) {
+                System.out.println(DBP.getProductCategories().get(i));
+            }
+
+        }
+    }
+
     // Buttons on top select the respective tab
     private void selectedTab() {
-        if (getText().equals("All Employees")) {
-            ManagerUI.tab.setSelectedIndex(0);
-            return;
-        }
-        if (getText().equals("Add New Employee")) {
-            ManagerUI.tab.setSelectedIndex(1);
-            return;
-        }
-        if (getText().equals("Edit Employee")) {
-            ManagerUI.tab.setSelectedIndex(0);
-            return;
-        }
-        if (getText().equals("Remove Employee")) {
-            ManagerUI.tab.setSelectedIndex(0);
-            return;
+        switch (getText()) {
+            case "All Employees":
+                ManagerUI.tab.setSelectedIndex(0);
+                return;
+            case "Add New Employee":
+                ManagerUI.tab.setSelectedIndex(1);
+                return;
+            case "Edit Employee":
+                ManagerUI.tab.setSelectedIndex(0);
+                return;
+            case "Remove Employee":
+                ManagerUI.tab.setSelectedIndex(0);
+                return;
+            case "All Products":
+                ManagerUI.tab.setSelectedIndex(2);
+                return;
+            case "Insert Product":
+                ManagerUI.tab.setSelectedIndex(3);
+                return;
+            case "Edit Product":
+                ManagerUI.tab.setSelectedIndex(2);
+                return;
+            case "Delete Product":
+                ManagerUI.tab.setSelectedIndex(2);
+                return;
         }
     }
 
@@ -112,10 +126,9 @@ public class AButton extends JButton {
             JLabel[] labels = new JLabel[compArray2.length];
             for (int i = 0; i < compArray2.length; ++i) {
                 if (compArray2[i] instanceof JLabel) {
-                    labels[i] = (JLabel)compArray2[i];
+                    labels[i] = (JLabel) compArray2[i];
                     labels[i].setHorizontalTextPosition(SwingConstants.RIGHT);
                     labels[i].setAlignmentX(SwingConstants.LEFT);
-                    labels[i].setIcon(new ImageIcon("./img/arrowRight.png"));
                 }
             }
             ManagerUI.allEmployeesPanel.revalidate();
@@ -124,7 +137,26 @@ public class AButton extends JButton {
         }
     }
 
-    private void clearsFields() {
+    private void updatesEmployee() {
+        if (getText().equals("Save Changes")) {
+
+            ArrayList<Component> allComp = new ArrayList<Component>();
+            ArrayList<TextField> tField = new ArrayList<TextField>();
+            Collections.addAll(allComp, ManagerUI.employeePanel.getComponents());
+            for (int i = 0; i < allComp.size(); ++i) {
+                if (allComp.get(i) instanceof TextField) {
+                    tField.add((TextField) (allComp.get(i)));
+                }
+            }
+            DB.updateEmployee(Integer.parseInt(tField.get(0).getText()), tField.get(1).getText(),
+                    tField.get(2).getText(), tField.get(3).getText(), tField.get(4).getText(),
+                    tField.get(5).getText(), tField.get(6).getText(), tField.get(7).getText(),
+                    tField.get(8).getText(), tField.get(9).getText(), tField.get(10).getText());
+            tField.get(0).setText(String.valueOf(tField.get(0).getText()) + " Data changed successfully!");
+        }
+    }
+
+    private void clearsFieldsEmployee() {
         if (getText().equals("Clear Fields")) {
             ManagerUI.positionTxt.setText("");
             ManagerUI.fNameTxt.setText("");
@@ -137,5 +169,50 @@ public class AButton extends JButton {
             ManagerUI.sexTxt.setText("");
             ManagerUI.ssnTxt.setText("");
         }
+    }
+
+    private void clearsFieldsProduct() {
+        if (getText().equals("Clear Product Fields")) {
+            ManagerUI.txtCategory.setText("");
+            ManagerUI.txtProdName.setText("");
+            ManagerUI.txtProdBrand.setText("");
+            ManagerUI.txtPriceBought.setText("");
+            ManagerUI.txtPriceSold.setText("");
+            ManagerUI.txtDescription.setText("");
+        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        addsNewEmployee();
+        clearsFieldsEmployee();
+        clearsFieldsProduct();
+        deletesEmployee();
+        updatesEmployee();
+        addsNewProduct();
+        selectedTab();
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        setBackground(pressedColor);
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        setBackground(rolloverColor);
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        setBackground(normalColor);
+
     }
 }

@@ -32,6 +32,7 @@ public class ALabel extends JLabel implements MouseListener {
     // Mouse Clicked
     @Override
     public void mouseClicked(MouseEvent e) {
+        //Removes everything on the employee panel, sets last clicked label, refreshes the textfields  
         if (getParent() == ManagerUI.allEmployeesPanel) {
             ManagerUI.employeePanel.removeAll();
             lastClickedLabel = Integer.parseInt(ManagerUI.previouslyPressedLabel.getName());
@@ -48,10 +49,12 @@ public class ALabel extends JLabel implements MouseListener {
     // first time will be null), I set the icon to null, so the previous label is
     // reset then I set the icon to the present label 
     // By pressing the label it becomes the last label pressed. 
+    //For loop is necessary to clear all the labels
     // The variable is previouslyPressedLabel
     @Override
     public void mousePressed(MouseEvent e) {
         if (ManagerUI.previouslyPressedLabel != null && getParent() == ManagerUI.allEmployeesPanel) {
+            
             ManagerUI.previouslyPressedLabel.setHorizontalTextPosition(SwingConstants.LEFT);
             ManagerUI.previouslyPressedLabel.setAlignmentX(SwingConstants.LEFT);
             ManagerUI.previouslyPressedLabel.setIcon(null);
@@ -62,12 +65,14 @@ public class ALabel extends JLabel implements MouseListener {
             setAlignmentX(SwingConstants.LEFT);
             setIcon(new ImageIcon("./img/arrowRight.png"));
             ManagerUI.previouslyPressedLabel = (JLabel) e.getSource();
+            return;
         }
     }
 
     // Mouse Released
     @Override
     public void mouseReleased(MouseEvent e) {
+        
     }
 
     // Mouse Enter | Sets labels color on mouse enter(a lighter shade)) - for all labels
