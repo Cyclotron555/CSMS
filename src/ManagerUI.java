@@ -4,6 +4,7 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -13,12 +14,17 @@ public class ManagerUI {
     public static JPanel allEmployeesPanel = new JPanel();
     public static int countLabels = 0;
     public static JLabel previouslyPressedLabel;
+    public static JLabel prevPressedProdLabel;
     public static boolean isDataReady;
     public static boolean isProductReady;
     public static ALabel autoEmployee;
+    public static ALabel autoProdCategory;
     public static int presentEmployeID;
     private static JPanel panelLeft = new JPanel((LayoutManager) new FlowLayout(FlowLayout.CENTER));
     private static JPanel panelRight = new JPanel((LayoutManager) new FlowLayout(FlowLayout.CENTER));
+    public static JPanel panelLeftProd;
+    private static JPanel panelCenterProd;
+    private static JPanel panelRightProd;
     public static JScrollPane scrollPaneL = new JScrollPane(panelLeft);
     public static int presentLabelID;
     public static ATextField positionTxt;
@@ -157,35 +163,67 @@ public class ManagerUI {
     }
 
     // Products Tab
-    private static void productsTab() {/*******************************************************
-                                        *HERE * HERE * HERE * HERE * HERE * HERE * HERE * HERE*
-                                        *******************************************************/
-        GridBagLayout gridRight = new GridBagLayout();
-        GridBagConstraints gbcRight = new GridBagConstraints();
+    private static void productsTab() {
         // left and right panels
-        JPanel panelLeft = new JPanel((LayoutManager) new FlowLayout(FlowLayout.CENTER));
-        JPanel panelRight = new JPanel((LayoutManager) new FlowLayout(FlowLayout.CENTER));
-        panelLeft.setBackground(new Color(33, 33, 33));
-        panelRight.setBackground(new Color(33, 33, 33));
+        panelLeftProd = new JPanel();
+        panelCenterProd = new JPanel();
+        panelRightProd = new JPanel();
+        panelLeftProd.setBackground(new Color(33, 33, 33));
+        panelCenterProd.setBackground(new Color(33, 33, 33));
+        panelRightProd.setBackground(new Color(33, 33, 33));
 
-        // divider - first split panel | split the panel vertically
-        JSplitPane splitPane2 = new JSplitPane(SwingConstants.VERTICAL, panelLeft, panelRight);
+        // divider1 - first split panel | split the panel vertically
+        JSplitPane splitPane1Prod = new JSplitPane(SwingConstants.VERTICAL, panelLeftProd, panelCenterProd);
+        JSplitPane splitPane2Prod = new JSplitPane(SwingConstants.VERTICAL, splitPane1Prod, panelRightProd);
         // divider set initial location (it can be moved)
-        splitPane2.setDividerLocation(400);
+        splitPane1Prod.setDividerLocation(300);
+        splitPane2Prod.setDividerLocation(640);
         // set the orientation of the divider
-        splitPane2.setOrientation(SwingConstants.VERTICAL);
+        splitPane1Prod.setOrientation(SwingConstants.VERTICAL);
         // Products tab
-        tab.add("  Products | Categories  ", splitPane2);
-
-
-
-
-
-
-
-
+        tab.add("  Products | Categories  ", splitPane2Prod);
+        allCategories();
     }
 
+    // Displays all Categories on the left in Products/categories Tab
+    public static void allCategories() {
+        GridBagLayout gridLeftProd = new GridBagLayout();
+        GridBagConstraints gbcP = new GridBagConstraints();
+        gbcP.fill = GridBagConstraints.HORIZONTAL;
+        gbcP.anchor = GridBagConstraints.FIRST_LINE_START;
+        panelLeftProd.setLayout(gridLeftProd);
+        ALabel titleLbl = new ALabel("Categories");
+        titleLbl.setBackground(new Color(15, 15, 15));
+        titleLbl.setBorder(BorderFactory.createLineBorder(new Color(185, 92, 0)));
+
+        if (DBP.getProductCategories().size() > 0) {
+            gbcP.ipadx = 100;
+            gbcP.ipady = 30;
+            gbcP.insets = new Insets(0, 0, 10, 0);
+            gbcP.gridx = 0;
+            gbcP.gridy = 0;
+            panelLeftProd.add(titleLbl, gbcP);
+            for (int i = 0; i < DBP.getProductCategories().size(); ++i) {
+                gbcP.ipadx = 100;
+                gbcP.ipady = 25;
+                // gbcP.weighty = 0.25;
+                gbcP.insets = new Insets(0, 0, 10, 0);
+                gbcP.gridx = 0;
+                gbcP.gridy = i + 1;
+                if (i == DBP.getProductCategories().size() - 1) {
+                    gbcP.gridheight = GridBagConstraints.REMAINDER;
+                    gbcP.weighty = 1.0;
+                }
+                
+                autoProdCategory = new ALabel(DBP.getProductCategories().get(i));
+                autoProdCategory.setPreferredSize(new Dimension(400, 40));
+                panelLeftProd.add(autoProdCategory, gbcP);
+                autoProdCategory.setName(String.valueOf(i));
+            }
+        }
+    }
+
+    // Insert New Product Tab
     private static void insertNewProductTab() {
         GridBagLayout gridP = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();

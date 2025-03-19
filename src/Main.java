@@ -33,7 +33,7 @@ class Main {
   public static void main(String[] args) {
 
     DB.createTableEmployee();
-    DBP.createTableProduct();
+    DBP.createTableProducts();
     DB.displayEmployee();
     setLookAndFeelTheme();
     Main main = new Main();
@@ -245,7 +245,6 @@ class Main {
       return;
     }
   }
-
 
   // Set Theme
   private static void setLookAndFeelTheme() {

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="CSMS">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/CSMS.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

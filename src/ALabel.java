@@ -67,6 +67,21 @@ public class ALabel extends JLabel implements MouseListener {
             ManagerUI.previouslyPressedLabel = (JLabel) e.getSource();
             return;
         }
+        if (ManagerUI.prevPressedProdLabel != null && getParent() == ManagerUI.panelLeftProd) {
+            
+            ManagerUI.prevPressedProdLabel.setHorizontalTextPosition(SwingConstants.LEFT);
+            ManagerUI.prevPressedProdLabel.setAlignmentX(SwingConstants.LEFT);
+            ManagerUI.prevPressedProdLabel.setIcon(null);
+            ManagerUI.prevPressedProdLabel.revalidate();
+        }
+        if(getParent() == ManagerUI.panelLeftProd && ! getText().equals("Categories")){
+            setHorizontalTextPosition(SwingConstants.RIGHT);
+            setAlignmentX(SwingConstants.LEFT);
+            setIcon(new ImageIcon("./img/arrowRight.png"));
+            ManagerUI.prevPressedProdLabel = (JLabel) e.getSource();
+            return;
+        }
+
     }
 
     // Mouse Released

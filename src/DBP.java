@@ -5,13 +5,12 @@ import javax.swing.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DBP {
     private static String url = "jdbc:sqlite:mainDB.db";
 
     // Create table Employees
-    public static void createTableProduct() {
+    public static void createTableProducts() {
         // SQL statement create table
         Connection connection = null;
         try {
@@ -107,10 +106,14 @@ public class DBP {
             ResultSet results = statement.executeQuery("SELECT * FROM products");
             while (results.next()) {
                 boolean containsElement = getProductCategories.contains(results.getString("categoryName"));
-                if( containsElement == false){
-                    getProductCategories.add(results.getString("categoryName"));
+                if (containsElement == false) {
+                    // Capitalize results and add to list of Categories
+                    String firstLetter = results.getString("categoryName").substring(0, 1);
+                    String remainingLetters = results.getString("categoryName").substring(1);
+                    firstLetter = firstLetter.toUpperCase();
+                    String finalWord = firstLetter + remainingLetters;
+                    getProductCategories.add(finalWord);
                 }
-                
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(Main.mainPanel, e.toString(), "CSMS - DatabaseError",
